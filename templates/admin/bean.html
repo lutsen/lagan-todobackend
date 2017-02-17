@@ -1,0 +1,54 @@
+{% if bean %}
+{%	set title = bean.title %}
+{% else %}
+{%	set title = 'New ' ~ beantype %}
+{% endif %}
+
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+	<h1 class="page-header">{% if bean %}{{ bean.title }} <small>({{ beantype }})</small>{% else %}New {{ beantype }}{% endif %}</h1>
+
+{% if bean %}
+	<div class="row">
+		<div class="col-sm-offset-2 col-sm-10">
+			<p class="small"><i>Created on {{ bean.created }}, last modified on {{ bean.modified }}.</i></p>
+		</div>
+	</div>
+{% endif %}
+
+	<form class="form-horizontal" method="post" role="form" enctype="multipart/form-data" action="{% if bean %}{{ path_for('putbean', { 'beantype': beantype, 'id': bean.id }) }}{% else %}{{ path_for('postbean', { 'beantype': beantype }) }}{% endif %}">
+		<input type="hidden" name="_METHOD" value="{{ method }}"/>
+{% for property in beanproperties %}
+		{% include property.input ~ '/' ~ property.input ~ '.html' %}
+{% endfor %}
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default delete">Delete</button>
+				<button type="submit" class="btn btn-default" name="submit" value="saveandclose">Save and close</button>
+				<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
+			</div>
+		</div>
+	</form>
+
+{% endblock content %}
+
+{% block javascript %}
+	{{ parent() }}
+
+	<!-- Delete button -->
+	<script type="text/javascript">
+		$( '.delete' ).on( 'click', function(e) {
+			e.preventDefault();
+			if( confirm( 'Are you sure you want to delete "{{ bean.title }}"?' ) ) {
+				var f = document.createElement('form');
+				$(this).after($(f).attr({
+					method: 'post',
+					action: $(this).attr('href')
+				}).append('<input type="hidden" name="_METHOD" value="delete"/>'));
+				$(f).submit();
+			}
+		});
+	</script>
+{% endblock javascript %}
