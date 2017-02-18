@@ -18,7 +18,7 @@ Requirements
 Install Lagan Todo-Backend
 ==========================
 
-First install Lagan Todo-Backend and its dependencies with [Composer](https://getcomposer.org/) with this command: `$ php composer.phar create-project lagan/lagan-todobackend [project-name] 0.7`  
+First install Lagan Todo-Backend and its dependencies with [Composer](https://getcomposer.org/) with this command: `$ php composer.phar create-project lagan/lagan-todobackend [project-name]`  
 (Replace [project-name] with the desired directory name for your new project)
 
 The Composer script creates the *cache* directory, *config.php* file and RedBean *rb.php* file for you.
